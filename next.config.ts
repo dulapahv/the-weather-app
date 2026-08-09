@@ -29,12 +29,17 @@ const nextConfig: NextConfig = {
 
 initOpenNextCloudflareForDev();
 
-export default withSentryConfig(nextConfig, {
-  org: process.env.SENTRY_ORG,
-  project: process.env.SENTRY_PROJECT,
-  authToken: process.env.SENTRY_AUTH_TOKEN,
-  silent: !process.env.CI,
-  widenClientFileUpload: true,
-  telemetry: false,
-  tunnelRoute: '/monitoring'
-});
+// NOTE: Disabled
+const SENTRY_ENABLED: boolean = false;
+
+export default SENTRY_ENABLED
+  ? withSentryConfig(nextConfig, {
+      org: process.env.SENTRY_ORG,
+      project: process.env.SENTRY_PROJECT,
+      authToken: process.env.SENTRY_AUTH_TOKEN,
+      silent: !process.env.CI,
+      widenClientFileUpload: true,
+      telemetry: false,
+      tunnelRoute: '/monitoring'
+    })
+  : nextConfig;
